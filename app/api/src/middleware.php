@@ -37,7 +37,7 @@ $app->add(new \Slim\Middleware\HttpBasicAuthentication([
 
 $app->add(new \Slim\Middleware\JwtAuthentication([
     "path" => ["/", "/admin"],
-    "passthrough" => ["/token", "/users/add", "/users/confirm"],
+    "passthrough" => ["/token", "/users/add", "/users/confirm", "/users/forgotPassword"],
     "secret" => getenv('JWT_SECRET'),
     "callback" => function ($request, $response, $arguments) use ($container) {
 

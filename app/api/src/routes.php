@@ -45,6 +45,8 @@ $app->group('/users',function() use ($app){
 
 	$app->patch('/confirm','Users:confirmEmail')->setName('user.confirmEmail');
 
+	$app->post('/forgotPassword','Users:forgotPassword')->setName('user.forgetPassword');
+
   /*
   $app->put('/:id', function($id) use ($app){
 	if($app->request->isPut())

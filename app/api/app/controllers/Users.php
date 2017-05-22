@@ -40,11 +40,12 @@ class Users
 														"'.$request->getParsedBodyParam("email").'",
 														"'.$this->activCode.'",
 														"'.password_hash($request->getParsedBodyParam("password"), PASSWORD_DEFAULT).'")');
-				$this->sendEmail($request);
+				$this->sendRegisterConfirmation($request);
 
 				$data = array('status' => 201,'data' => 'ok', 'message' => 'Register successfully included.');
 			
 			}else{
+
 				$data = array('status' => 401,'data' => 'error', 'message' => 'This email is already assossiated to another account.');
 			}
 
@@ -55,6 +56,42 @@ class Users
 			echo "<br>" . $e->getMessage();
 		}
 	}
+
+	public function forgotPassword($request, $response)
+	{
+		try {				
+
+			if (!$this->isEmailValid($request, $response)) {
+
+				$connection = $this->db;	
+
+				$stmt = $connection->prepare('SELECT password FROM user WHERE activ = 1 && email = "'.$request->getParsedBodyParam("email").'"');
+				$stmt->execute();
+				$rows = $stmt->fetchAll();
+
+				print_r($rows[0]["password"]);
+
+				if(!isset($rows)){					
+
+					$data = array('status' => 401,'data' => 'ok', 'message' => 'This account is not active yet.');	
+				}else{
+
+					$this->sendEmailPassword($request, $rows);
+					$data = array('status' => 201,'data' => 'ok', 'message' => 'An email was send to you, so you can change your password.');	
+				}
+							
+			}else{
+
+				$data = array('status' => 401,'data' => 'error', 'message' => 'This email is not assossiated to any account.');
+			}
+
+			return $response->withHeader("Content-Type", "application/json")
+				->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+
+		}catch(PDOException $e){
+			echo "<br>" . $e->getMessage();
+		}
+	}	
 
 	public function isEmailValid($request, $response){
 		
@@ -74,7 +111,7 @@ class Users
 
 	}
 
-	public function sendEmail($request){
+	public function sendRegisterConfirmation($request){
 
 		$mail = new Message;
 
@@ -84,6 +121,19 @@ class Users
 				->setHTMLBody("Hello, to confirm this Email click this URL: <br />
 				<a target='_blank' href='/auth/confirm?code=" . $this->activCode ."'>
 				/auth/confirm?code=" . $this->activCode . "</a>");
+		 
+		$this->mailer->send($mail);
+		 
+	}
+
+	public function sendEmailPassword($request, $password){
+
+		$mail = new Message;
+
+		$mail->setFrom('Allowance App <contact@allowance.com.br>')
+				->addTo($request->getParam('email'))
+				->setSubject('Plaease confirm your email')
+				->setHTMLBody("Your Password is: ".$password."<br>");
 		 
 		$this->mailer->send($mail);
 		 
