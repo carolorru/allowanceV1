@@ -3,6 +3,7 @@
 	<h1 class="text-center register-title">Sign in</h1>
 
 	<form class="form-horizontal" name="registerForm" novalidate ng-submit="submitRegister()">
+		<input type="hidden" name="activCode" ng-model="registration.activ" value="0">
 		<div class="form-group">
 			<label for="first-name" class="col-sm-3 control-label">First Name</label>
 			<div class="col-sm-9">

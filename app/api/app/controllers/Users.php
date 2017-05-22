@@ -21,7 +21,7 @@ class Users
 
 	public function postRegister($request, $response)
 	{
-		try {				
+		try {				activ_code
 
 			if ($this->isEmailValid($request, $response)) {
 
@@ -29,11 +29,13 @@ class Users
 
 				$stmt = $connection->exec('INSERT INTO user(first_name, 
 															last_name, 
-															email, 
+															email,
+															activ_code, 
 															password) 
 												VALUES ("'.$request->getParsedBodyParam("first_name").'",
 														"'.$request->getParsedBodyParam("last_name").'",
 														"'.$request->getParsedBodyParam("email").'",
+														"'.$request->getParsedBodyParam("activ_code").'",
 														"'.password_hash($request->getParsedBodyParam("password"), PASSWORD_DEFAULT).'")');
 				$this->sendEmail($request);
 
