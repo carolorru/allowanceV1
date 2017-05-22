@@ -1,6 +1,7 @@
 <div class="row">
-
-	<h1 class="text-center register-title">Sign in</h1>
+	<div class="page-header">
+		<h1>Authentication <small>Create an account</small></h1>
+	</div>
 
 	<form class="form-horizontal" name="registerForm" novalidate ng-submit="submitRegister()">
 		<input type="hidden" name="activCode" ng-model="registration.activ" value="0">
@@ -51,6 +52,6 @@
 			</div>
 		</div>		
 	</form>
-	<p ng-if="error != null" class="bg-danger">{{error}}</p>
+	<div class="alert alert-warning" role="alert" ng-if="error != null">{{error}}</div>
 	<a ng-click="$back()">Back</a>
 </div>

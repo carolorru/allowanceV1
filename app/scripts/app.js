@@ -53,6 +53,18 @@ angular
 				controllerAs: 'users',
 				authorize: true
 			})
+			.when('/confirm-register', {
+				templateUrl: 'views/confirm-register.html',
+				controller: 'ConfirmRegisterCtrl',
+				controllerAs: 'confirmRegister',
+				authorize: false
+			})
+			.when('/forgot-password', {
+				templateUrl: 'views/forgot-password.html',
+				controller: 'ForgotPasswordCtrl',
+				controllerAs: 'forgotPassword',
+				authorize: false
+			})
 			.otherwise({
 				redirectTo: '/'
 			});      
