@@ -43,6 +43,8 @@ $app->group('/users',function() use ($app){
 
 	$app->post('/add', 'Users:postRegister')->setName('user.register');
 
+	$app->patch('/confirm','Users:confirmEmail')->setName('user.confirmEmail');
+
   /*
   $app->put('/:id', function($id) use ($app){
 	if($app->request->isPut())

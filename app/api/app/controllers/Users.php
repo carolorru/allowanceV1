@@ -13,19 +13,22 @@ use Nette\Mail\SmtpMailer as SmtpMailer;
 
 class Users 
 {
-    
-    public function __construct(PDO $db, SmtpMailer $email) {
-        $this->db = $db;
-        $this->mailer = $email;
-    }
+	private $activCode;
+
+	public function __construct(PDO $db, SmtpMailer $email) {
+		$this->db = $db;
+		$this->mailer = $email;
+	}
 
 	public function postRegister($request, $response)
 	{
-		try {				activ_code
+		try {				
 
 			if ($this->isEmailValid($request, $response)) {
 
 				$connection = $this->db;	
+
+				$this->activCode = md5($request->getParsedBodyParam("first_name") . date('Ymdhis'));
 
 				$stmt = $connection->exec('INSERT INTO user(first_name, 
 															last_name, 
@@ -35,11 +38,12 @@ class Users
 												VALUES ("'.$request->getParsedBodyParam("first_name").'",
 														"'.$request->getParsedBodyParam("last_name").'",
 														"'.$request->getParsedBodyParam("email").'",
-														"'.$request->getParsedBodyParam("activ_code").'",
+														"'.$this->activCode.'",
 														"'.password_hash($request->getParsedBodyParam("password"), PASSWORD_DEFAULT).'")');
 				$this->sendEmail($request);
 
 				$data = array('status' => 201,'data' => 'ok', 'message' => 'Register successfully included.');
+			
 			}else{
 				$data = array('status' => 401,'data' => 'error', 'message' => 'This email is already assossiated to another account.');
 			}
@@ -71,7 +75,6 @@ class Users
 	}
 
 	public function sendEmail($request){
-		$activCode = md5('yourSalt' . date('Ymdhis'));
 
 		$mail = new Message;
 
@@ -79,12 +82,36 @@ class Users
 				->addTo($request->getParam('email'))
 				->setSubject('Plaease confirm your email')
 				->setHTMLBody("Hello, to confirm this Email click this URL: <br />
-				<a target='_blank' href='/auth/confirm?code=" . $activCode ."'>
-				/auth/confirm?code=" . $activCode . "</a>");
-		//$mail->SMTPDebug  = 1;
+				<a target='_blank' href='/auth/confirm?code=" . $this->activCode ."'>
+				/auth/confirm?code=" . $this->activCode . "</a>");
 		 
 		$this->mailer->send($mail);
 		 
-		//$this->flash->addMessage('info','Please confirm your email. We send a Email with activate Code.');
+	}
+
+	public function confirmEmail($request,$response){
+	 
+		if (!$request->getParam('code')) {
+			$data = array('status' => 401,'data' => 'error', 'message' => 'This is not an URL valid');
+			return $response->withHeader("Content-Type", "application/json")
+				->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+		}
+	 	
+	 	try {
+			$connection = $this->db;
+
+			$codeValidate = $connection->prepare('UPDATE user SET activ = 1 WHERE activ_code = "'.$request->getParam('code').'"');
+			$codeValidate->execute();
+			
+			$data = array('status' => 201,'data' => 'ok', 'message' => 'Account activated.');
+			return $response->withHeader("Content-Type", "application/json")
+				->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+
+		}catch(PDOException $e){
+			$data = array('status' => 401,'data' => 'error', 'message' => $e->getMessage());
+			return $response->withHeader("Content-Type", "application/json")
+				->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+		}
+
 	}
 }
