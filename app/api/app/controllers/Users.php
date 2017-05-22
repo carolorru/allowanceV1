@@ -63,20 +63,20 @@ class Users
 
 			if (!$this->isEmailValid($request, $response)) {
 
-				$connection = $this->db;	
+				$connection = $this->db;					
 
 				$stmt = $connection->prepare('SELECT password FROM user WHERE activ = 1 && email = "'.$request->getParsedBodyParam("email").'"');
 				$stmt->execute();
 				$rows = $stmt->fetchAll();
-
-				print_r($rows[0]["password"]);
 
 				if(!isset($rows)){					
 
 					$data = array('status' => 401,'data' => 'ok', 'message' => 'This account is not active yet.');	
 				}else{
 
-					$this->sendEmailPassword($request, $rows);
+					$this->activCode = md5($request->getParsedBodyParam("first_name") . date('Ymdhis'));
+
+					$this->sendEmailPassword($request, $rows[0]["password"]);
 					$data = array('status' => 201,'data' => 'ok', 'message' => 'An email was send to you, so you can change your password.');	
 				}
 							
@@ -118,7 +118,7 @@ class Users
 		$mail->setFrom('Allowance App <contact@allowance.com.br>')
 				->addTo($request->getParam('email'))
 				->setSubject('Plaease confirm your email')
-				->setHTMLBody("Hello, to confirm this Email click this URL: <br />
+				->setHTMLBody("Hello, to CONFIRM EMAIL click this URL: <br />
 				<a target='_blank' href='/auth/confirm?code=" . $this->activCode ."'>
 				/auth/confirm?code=" . $this->activCode . "</a>");
 		 
@@ -133,7 +133,9 @@ class Users
 		$mail->setFrom('Allowance App <contact@allowance.com.br>')
 				->addTo($request->getParam('email'))
 				->setSubject('Plaease confirm your email')
-				->setHTMLBody("Your Password is: ".$password."<br>");
+				->setHTMLBody("Hello, RECREATE PASSWORD click this URL: <br />
+				<a target='_blank' href='/auth/confirm?code=" . $this->activCode ."'>
+				/auth/confirm?code=" . $this->activCode . "</a>");
 		 
 		$this->mailer->send($mail);
 		 
@@ -154,6 +156,32 @@ class Users
 			$codeValidate->execute();
 			
 			$data = array('status' => 201,'data' => 'ok', 'message' => 'Account activated.');
+			return $response->withHeader("Content-Type", "application/json")
+				->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+
+		}catch(PDOException $e){
+			$data = array('status' => 401,'data' => 'error', 'message' => $e->getMessage());
+			return $response->withHeader("Content-Type", "application/json")
+				->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+		}
+
+	}
+
+	public function changePassword($request,$response){
+	 
+		if (!$request->getParam('code')) {
+			$data = array('status' => 401,'data' => 'error', 'message' => 'This is not an URL valid');
+			return $response->withHeader("Content-Type", "application/json")
+				->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+		}
+	 	
+	 	try {
+			$connection = $this->db;
+
+			$codeValidate = $connection->prepare('UPDATE user SET password = "'.password_hash($request->getParsedBodyParam("password"), PASSWORD_DEFAULT).'" WHERE activ_code = "'.$request->getParam('code').'"');
+			$codeValidate->execute();
+			
+			$data = array('status' => 201,'data' => 'ok', 'message' => 'Password changed successfully.');
 			return $response->withHeader("Content-Type", "application/json")
 				->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 

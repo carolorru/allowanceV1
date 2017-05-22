@@ -47,6 +47,8 @@ $app->group('/users',function() use ($app){
 
 	$app->post('/forgotPassword','Users:forgotPassword')->setName('user.forgetPassword');
 
+	$app->patch('/changePassword','Users:changePassword')->setName('user.changePassword');
+
   /*
   $app->put('/:id', function($id) use ($app){
 	if($app->request->isPut())
