@@ -1,6 +1,6 @@
 /vendor/
-!/vendor/tuupola/slim-basic-auth/
+!/vendor/tuupola/slim-basic-auth/*
 /logs/*
 !/logs/README.md
-/public/.env
-.env
+/public/*.env
+*.env
