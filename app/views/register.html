@@ -1,0 +1,55 @@
+<div class="row">
+
+	<h1 class="text-center register-title">Sign in</h1>
+
+	<form class="form-horizontal" name="registerForm" novalidate ng-submit="submitRegister()">
+		<div class="form-group">
+			<label for="first-name" class="col-sm-3 control-label">First Name</label>
+			<div class="col-sm-9">
+				<input type="text" id="first-name" name="firstName" ng-model="registration.first_name" class="form-control" placeholder="First Name" required>
+				<span id="helpBlock" class="help-block" ng-if="(registerForm.firstName.$touched || registerForm.$submitted) && registerForm.firstName.$invalid">First name is required</span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="last-name" class="col-sm-3 control-label">Last Name</label>
+			<div class="col-sm-9">
+				<input type="text" id="last-name" name="lastName" ng-model="registration.last_name" class="form-control" placeholder="Last Name" required>
+				<span id="helpBlock" class="help-block" ng-if="(registerForm.lastName.$touched || registerForm.$submitted) && registerForm.lastName.$invalid">Last name is required</span>
+			</div>			
+		</div>
+		<div class="form-group">
+			<label for="email" class="col-sm-3 control-label">Email</label>
+			<div class="col-sm-9">
+				<input type="email" id="email" name="email" ng-model="registration.email" class="form-control" placeholder="Email" required>
+				<span id="helpBlock" class="help-block" ng-if="(registerForm.email.$touched || registerForm.$submitted) && registerForm.email.$invalid">Email is required</span>
+			</div>			
+		</div>
+		<div class="form-group">
+			<label for="password" class="col-sm-3 control-label">Password</label>
+			<div class="col-sm-9">
+				<input type="password" id="password" name="password" ng-model="registration.password" class="form-control" placeholder="Password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/" required>
+				
+				<span id="helpBlock" class="help-block" ng-if="(registerForm.password.$touched || registerForm.$submitted) && registerForm.password.$error.required">Password is required</span>
+				<span id="helpBlock" class="help-block" ng-if="(registerForm.password.$touched || registerForm.$submitted) && registerForm.password.$error.pattern">Password should be atleast 8 characters long and should contain one number,one character and one special character</span>
+
+			</div>						
+		</div>
+		<div class="form-group">
+			<label for="repeat-password" class="col-sm-3 control-label">Repeat Password</label>
+			<div class="col-sm-9">
+				<input type="password" id="repeat-password" name="repeatPassword" ng-model="registration.repeat_password" class="form-control" placeholder="Repeat Password" password-verify="{{registerForm.password.$viewValue}}" required>
+				
+				<span id="helpBlock" class="help-block" ng-if="(registerForm.repeatPassword.$touched || registerForm.$submitted) && registerForm.repeatPassword.$error.required">Repeat password is required</span>
+				<span id="helpBlock" class="help-block" ng-if="(registerForm.repeatPassword.$touched || registerForm.$submitted) && registerForm.repeatPassword.$error.passwordVerify">Password doesn't match</span>
+
+			</div>						
+		</div>		
+		<div class="form-group">
+			<div class="col-sm-offset-3 col-sm-9">
+				<button type="submit" class="btn btn-primary btn-block" ng-click="test()">Sign up</button>
+			</div>
+		</div>		
+	</form>
+	<p ng-if="error != null" class="bg-danger">{{error}}</p>
+	<a ng-click="$back()">Back</a>
+</div>

@@ -1,0 +1,24 @@
+<div class="row">
+
+		<h1 class="text-center login-title">Sign in</h1>
+		
+		<form class="form-signin" name="loginForm" novalidate ng-submit="submitLogin()">
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<label for="username" class="sr-only">Username</label>
+			<input type="text" id="username" name="username" class="form-control" ng-model="credentials.first_name" placeholder="Username" required>
+			<span id="helpBlock" class="help-block" ng-if="(loginForm.username.$touched || loginForm.$submitted) && loginForm.username.$invalid">Username is required</span>
+			<label for="password" class="sr-only">Password</label>
+			<input type="password" id="password" name="password" class="form-control" ng-model="credentials.password" placeholder="Password" required>
+			<span id="helpBlock" class="help-block" ng-if="(loginForm.password.$touched || loginForm.$submitted) && loginForm.password.$invalid">Password is required</span>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+			<!--label class="checkbox pull-left">
+				<input type="checkbox" value="remember-me">
+				Remember me
+			</label-->			
+		</form>
+		<p ng-if="error != null" class="bg-danger">{{error}}</p>
+
+	<a href="/#!/register" class="text-center new-account">Create an account </a>
+
+</div>
+
