@@ -38,7 +38,7 @@ $app->add(new \Slim\Middleware\HttpBasicAuthentication([
 $app->add(new \Slim\Middleware\JwtAuthentication([
     "path" => ["/", "/admin"],
     "passthrough" => ["/token", "/admin/ping", "/users/add"],
-    "secret" => "MySuperSecretPasswordThatIHaveToChange",
+    "secret" => getenv('JWT_SECRET'),
     "callback" => function ($request, $response, $arguments) use ($container) {
 
         $container["jwt"] = $arguments["decoded"];

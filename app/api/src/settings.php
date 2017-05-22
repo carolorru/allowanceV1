@@ -20,17 +20,17 @@ return [
 
 		// DB settings
 		'db' => [
-			'host' => '127.0.0.1',
-			'user' => 'root',
-			'pass' => '',
-			'dbname' => 'test',
+			'host' => getenv('DB_HOST'),
+			'user' => getenv('DB_USER'),
+			'pass' => getenv('DB_PASSWORD'),
+			'dbname' => getenv('DB_NAME'),
 		],
 
 		// Send email
 		'mailer' => [
-			'host' => 'br346.hostgator.com.br',
-			'username' => 'contato@carolineorru.com.br',
-			'password' => 'Publicidade7',
+			'host' => getenv('MAIL_HOST'),
+			'username' => getenv('MAIL_USER'),
+			'password' => getenv('MAIL_PASSWORD'),
 		]
 		
 	],

@@ -129,7 +129,7 @@ $app->post("/token", function ($request, $response, $arguments) {
 		"exp" => $future->getTimeStamp(),
 		"name" => $server["PHP_AUTH_USER"],
 	];
-	$secret = "MySuperSecretPasswordThatIHaveToChange";
+	$secret = getenv('JWT_SECRET');
 	$token = JWT::encode($payload, $secret, "HS256");
 	$data["status"] = "ok";
 	$data["token"] = $token;
