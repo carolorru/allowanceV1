@@ -28,9 +28,9 @@ return [
 
 		// Send email
 		'mailer' => [
-			'host' => getenv('MAIL_HOST'),
-			'username' => getenv('MAIL_USERNAME'),
-			'password' => getenv('MAIL_PASSWORD'),
+			'host' => 'br346.hostgator.com.br',
+			'username' => 'contato@carolineorru.com.br',
+			'password' => 'Publicidade7',
 		]
 		
 	],

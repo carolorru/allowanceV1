@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use PDO;
 use Nette\Mail\Message;
+use Nette\Mail\SmtpMailer as SmtpMailer;
 
 //use App\Models\DbHandler;
 /**
@@ -13,8 +14,9 @@ use Nette\Mail\Message;
 class Users 
 {
     
-    public function __construct(PDO $db) {
+    public function __construct(PDO $db, SmtpMailer $email) {
         $this->db = $db;
+        $this->mailer = $email;
     }
 
 	public function postRegister($request, $response)
@@ -67,14 +69,17 @@ class Users
 	}
 
 	public function sendEmail($request){
+		$activCode = md5('yourSalt' . date('Ymdhis'));
+
 		$mail = new Message;
 
-		$mail->setFrom('your@email.com')
+		$mail->setFrom('Allowance App <contact@allowance.com.br>')
 				->addTo($request->getParam('email'))
 				->setSubject('Plaease confirm your email')
 				->setHTMLBody("Hello, to confirm this Email click this URL: <br />
-				<a target='_blank' href='" . $this->container->settings['baseUrl'] . "auth/confirm?code=" . $activCode ."'>
-				" . $this->container->settings['baseUrl'] . "/auth/confirm?code=" . $activCode . "</a>");
+				<a target='_blank' href='/auth/confirm?code=" . $activCode ."'>
+				/auth/confirm?code=" . $activCode . "</a>");
+		//$mail->SMTPDebug  = 1;
 		 
 		$this->mailer->send($mail);
 		 

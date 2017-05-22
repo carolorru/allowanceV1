@@ -37,5 +37,5 @@ $container['mailer'] = function($container) {
 
 //Register user
 $container['Users'] = function($container){
-    return new \App\Controllers\Users($container->get('db'));
+    return new \App\Controllers\Users($container->get('db'), $container->get('mailer'));
 };
