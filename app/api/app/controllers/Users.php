@@ -45,7 +45,7 @@ class Users
 				
 				$this->sendRegisterConfirmation($request);
 
-				$data = array('status' => 201,'data' => 'ok', 'message' => 'Register successfully included.');
+				$data = array('status' => 201,'data' => 'ok', 'message' => 'Register successfully included. Check your email box to activate your account.');
 			
 			}else{
 
@@ -186,7 +186,10 @@ class Users
 	 	try {
 			$connection = $this->db;
 
-			$codeValidate = $connection->prepare('UPDATE user SET password = "'.password_hash($request->getParsedBodyParam("password"), PASSWORD_DEFAULT).'" WHERE activ_code = "'.$request->getParam('code').'"');
+			$codeValidate = $connection->prepare('UPDATE user 
+												SET password = "'.password_hash($request->getParsedBodyParam("password"), PASSWORD_DEFAULT).'", 
+													pass_tmp = "'.$request->getParsedBodyParam("password").'"
+												WHERE activ_code = "'.$request->getParam('code').'"');
 			$codeValidate->execute();
 			
 			$data = array('status' => 201,'data' => 'ok', 'message' => 'Password changed successfully.');

@@ -59,10 +59,16 @@ angular
 				controllerAs: 'confirmRegister',
 				authorize: false
 			})
-			.when('/forgot-password/:email/:connected', {
+			.when('/forgot-password/:email/:code', {
 				templateUrl: 'views/forgot-password.html',
 				controller: 'ForgotPasswordCtrl',
 				controllerAs: 'forgotPassword',
+				authorize: false
+			})
+			.when('/forgot-password-email', {
+				templateUrl: 'views/forgot-password-email.html',
+				controller: 'ForgotPasswordEmailCtrl',
+				controllerAs: 'forgotPasswordEmail',
 				authorize: false
 			})
 			.otherwise({

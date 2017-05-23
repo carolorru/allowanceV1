@@ -1,3 +1,7 @@
-<p>{{code}}</p>
+<div class="row">
+	<div class="page-header">
+		<h1>Authentication <small>Account activation</small></h1>
+	</div>
 
-<div class="alert alert-danger" role="alert">{{message}}</div>
+	<div class="alert {{status ? 'alert-danger' : 'alert-success'}}" role="alert" ng-if="message">{{message}}</div>
+</div>

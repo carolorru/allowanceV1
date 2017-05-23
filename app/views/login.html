@@ -2,7 +2,9 @@
 	<div class="page-header">
 		<h1>Authentication <small>Sign in</small></h1>
 	</div>
-	
+	<div class="clearfix">
+		<a href="/#!/forgot-password-email" class="text-center pull-right">Forgot password </a>	
+	</div>	
 	<form class="form-signin" name="loginForm" novalidate ng-submit="submitLogin()">
 		<label for="username" class="sr-only">Username</label>
 		<input type="text" id="username" name="username" class="form-control" ng-model="credentials.email" placeholder="Username" required>
@@ -10,16 +12,14 @@
 		<label for="password" class="sr-only">Password</label>
 		<input type="password" id="password" name="password" class="form-control" ng-model="credentials.password" placeholder="Password" required>
 		<span id="helpBlock" class="help-block" ng-if="(loginForm.password.$touched || loginForm.$submitted) && loginForm.password.$invalid">Password is required</span>
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-		<!--label class="checkbox pull-left">
-			<input type="checkbox" value="remember-me">
-			Remember me
-		</label-->			
+		<button class="btn btn-primary btn-block" type="submit">Sign in</button>
+		
+		<a href="/#!/register" class="btn btn-warning btn-block" role="button">Create an account </a>
 	</form>
 	<div class="alert alert-danger" role="alert" ng-if="error != null">{{error}}</div>
 
-	<a href="/#!/register" class="text-center new-account">Create an account </a>
-	<a href="/#!/forgot-password" class="text-center new-account">Forgot password </a>
+	
+	
 
 </div>
 

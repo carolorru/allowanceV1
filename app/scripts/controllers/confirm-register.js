@@ -8,7 +8,7 @@
  * Controller of the allowanceApp
  */
 angular.module('allowanceApp')
-	.controller('ConfirmRegisterCtrl', function ($scope, $routeParams, AuthenticService) {
+	.controller('ConfirmRegisterCtrl', function ($scope, $routeParams, AuthenticService, $location) {
 		$scope.code = $routeParams.code;
 
 		AuthenticService.signout();
@@ -16,6 +16,8 @@ angular.module('allowanceApp')
 		AuthenticService.confirmSignup($scope.code).then( function(response){
 			
 			$scope.message = response.data.message;
+
+			$scope.status = response.data.status === 401;
 
 			AuthenticService.signin(response.data.return).then( function(){
 				
