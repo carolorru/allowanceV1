@@ -16,7 +16,7 @@ angular.module('allowanceApp')
 				var deferred = $q.defer();
 
 				$http.post('http://localhost:9001/public/token', data ,{
-					headers: {'authorization': 'Basic ' + $base64.encode(data.first_name+':'+data.password)}
+					headers: {'authorization': 'Basic ' + $base64.encode(data.email+':'+data.password)}
 				}).then(function onSuccess(response) {
 					
 					// Store token
@@ -39,8 +39,24 @@ angular.module('allowanceApp')
 				$http.post('http://localhost:9001/public/users/add', data)
 				.then(function onSuccess(response) {					
 					
-					// Store token
-					//AuthService.setToken(response.data.token);
+					deferred.resolve(response);
+
+				}).catch(function onError(response) {
+					
+					deferred.reject(response.data.message);
+
+				}); 
+
+				return deferred.promise;
+			},
+
+			confirmSignup : function (data) {
+
+				var deferred = $q.defer();
+
+				$http.patch('http://localhost:9001/public/users/confirm?code=' + data)
+				.then(function onSuccess(response) {					
+
 					deferred.resolve(response);
 
 				}).catch(function onError(response) {

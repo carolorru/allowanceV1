@@ -53,13 +53,13 @@ angular
 				controllerAs: 'users',
 				authorize: true
 			})
-			.when('/confirm-register', {
+			.when('/confirm-register/:code', {
 				templateUrl: 'views/confirm-register.html',
 				controller: 'ConfirmRegisterCtrl',
 				controllerAs: 'confirmRegister',
 				authorize: false
 			})
-			.when('/forgot-password', {
+			.when('/forgot-password/:email/:connected', {
 				templateUrl: 'views/forgot-password.html',
 				controller: 'ForgotPasswordCtrl',
 				controllerAs: 'forgotPassword',

@@ -3,6 +3,8 @@
 		<h1>Authentication <small>Create an account</small></h1>
 	</div>
 
+	<div class="alert alert-success" role="alert" ng-if="message">{{message}}</div>
+
 	<form class="form-horizontal" name="registerForm" novalidate ng-submit="submitRegister()">
 		<input type="hidden" name="activCode" ng-model="registration.activ" value="0">
 		<div class="form-group">
@@ -52,6 +54,6 @@
 			</div>
 		</div>		
 	</form>
-	<div class="alert alert-warning" role="alert" ng-if="error != null">{{error}}</div>
+	<div class="alert alert-danger" role="alert" ng-if="error != null">{{error}}</div>
 	<a ng-click="$back()">Back</a>
 </div>

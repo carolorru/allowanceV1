@@ -27,20 +27,9 @@ angular.module('allowanceApp')
 		if(!$scope.registerForm.$valid){
 			return;
 		}else{
-			//console.log($scope.registerForm);
-			
 			// use then when you use Promise (look the service code)
 			AuthenticService.signup($scope.registration).then( function(response){
-				console.log(response);
-
-				//$location.path('/');m
-				
-				/*
-				$http.get('http://localhost:9001/public/users/').then(function(response) {
-					console.log(response);
-					//AuthService.setToken(response.data.token);
-				}); 
-				*/
+				$scope.message = response.data.message;
 
 			}).catch(function(response){
 				$scope.error = response;

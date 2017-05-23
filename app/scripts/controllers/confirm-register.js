@@ -8,10 +8,26 @@
  * Controller of the allowanceApp
  */
 angular.module('allowanceApp')
-  .controller('ConfirmRegisterCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+	.controller('ConfirmRegisterCtrl', function ($scope, $routeParams, AuthenticService) {
+		$scope.code = $routeParams.code;
+
+		AuthenticService.signout();
+
+		AuthenticService.confirmSignup($scope.code).then( function(response){
+			
+			$scope.message = response.data.message;
+
+			AuthenticService.signin(response.data.return).then( function(){
+				
+				$location.path('/');
+
+			}).catch(function(response){
+
+				$scope.error = response;
+
+			});		
+
+		}).catch(function(response){
+			$scope.error = response;
+		});		
+	});

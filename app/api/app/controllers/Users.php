@@ -33,13 +33,16 @@ class Users
 				$stmt = $connection->exec('INSERT INTO user(first_name, 
 															last_name, 
 															email,
-															activ_code, 
+															activ_code,
+															pass_tmp, 
 															password) 
 												VALUES ("'.$request->getParsedBodyParam("first_name").'",
 														"'.$request->getParsedBodyParam("last_name").'",
 														"'.$request->getParsedBodyParam("email").'",
 														"'.$this->activCode.'",
+														"'.$request->getParsedBodyParam("password").'",
 														"'.password_hash($request->getParsedBodyParam("password"), PASSWORD_DEFAULT).'")');
+				
 				$this->sendRegisterConfirmation($request);
 
 				$data = array('status' => 201,'data' => 'ok', 'message' => 'Register successfully included.');
@@ -152,10 +155,15 @@ class Users
 	 	try {
 			$connection = $this->db;
 
-			$codeValidate = $connection->prepare('UPDATE user SET activ = 1 WHERE activ_code = "'.$request->getParam('code').'"');
+			$passTmp = $connection->prepare('SELECT email, pass_tmp FROM user WHERE activ_code = "'.$request->getParam('code').'"');
+			$passTmp->execute();
+			$rows = $passTmp->fetch(PDO::FETCH_ASSOC);
+
+
+			$codeValidate = $connection->prepare('UPDATE user SET activ = 1, pass_tmp = "" WHERE activ_code = "'.$request->getParam('code').'"');
 			$codeValidate->execute();
 			
-			$data = array('status' => 201,'data' => 'ok', 'message' => 'Account activated.');
+			$data = array('status' => 201, 'return' => $rows, 'message' => 'Account activated.');
 			return $response->withHeader("Content-Type", "application/json")
 				->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 
@@ -192,4 +200,5 @@ class Users
 		}
 
 	}
+
 }

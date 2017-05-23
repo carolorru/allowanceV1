@@ -15,7 +15,7 @@ $app->add(new \Slim\Middleware\HttpBasicAuthentication([
  
         "pdo" => $container["db"],
         "table" => "user",
-        "user" => "first_name",
+        "user" => "email",
         "hash" => "password"
  
     ]),

@@ -11,7 +11,7 @@ angular.module('allowanceApp')
   .controller('LoginCtrl', function ($scope, $localStorage, AuthenticService, $http, $location) {
 	
 	$scope.credentials = {
-		first_name: '',
+		email: '',
 		password: ''
 	};
 

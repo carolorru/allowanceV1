@@ -5,7 +5,7 @@
 	
 	<form class="form-signin" name="loginForm" novalidate ng-submit="submitLogin()">
 		<label for="username" class="sr-only">Username</label>
-		<input type="text" id="username" name="username" class="form-control" ng-model="credentials.first_name" placeholder="Username" required>
+		<input type="text" id="username" name="username" class="form-control" ng-model="credentials.email" placeholder="Username" required>
 		<span id="helpBlock" class="help-block" ng-if="(loginForm.username.$touched || loginForm.$submitted) && loginForm.username.$invalid">Username is required</span>
 		<label for="password" class="sr-only">Password</label>
 		<input type="password" id="password" name="password" class="form-control" ng-model="credentials.password" placeholder="Password" required>
@@ -16,7 +16,7 @@
 			Remember me
 		</label-->			
 	</form>
-	<div class="alert alert-warning" role="alert" ng-if="error != null">{{error}}</div>
+	<div class="alert alert-danger" role="alert" ng-if="error != null">{{error}}</div>
 
 	<a href="/#!/register" class="text-center new-account">Create an account </a>
 	<a href="/#!/forgot-password" class="text-center new-account">Forgot password </a>
