@@ -19,15 +19,17 @@ angular.module('allowanceApp')
 
 			$scope.status = response.data.status === 401;
 
-			AuthenticService.signin(response.data.return).then( function(){
-				
-				$location.path('/');
+			if (!$scope.status) {
+				AuthenticService.signin(response.data.return).then( function(){
+					
+					$location.path('/');
 
-			}).catch(function(response){
+				}).catch(function(response){
 
-				$scope.error = response;
+					$scope.error = response;
 
-			});		
+				});	
+			}	
 
 		}).catch(function(response){
 			$scope.error = response;
