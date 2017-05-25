@@ -8,10 +8,8 @@
  * Controller of the allowanceApp
  */
 angular.module('allowanceApp')
-  .controller('UsersCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('UsersCtrl', function ($scope, $localStorage) {
+    
+    $scope.user = $localStorage.user;
+    
   });

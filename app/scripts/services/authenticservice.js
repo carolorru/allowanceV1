@@ -21,6 +21,9 @@ angular.module('allowanceApp')
 					
 					// Store token
 					AuthService.setToken(response.data.token);
+					// Store user
+					AuthService.setUser(response.data.user);
+
 					deferred.resolve(response);
 
 				}).catch(function onError(response) {

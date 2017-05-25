@@ -13,7 +13,7 @@ angular.module('allowanceApp')
 
 		$scope.items = [
 			{path: '', title: 'Home'},
-			{path: '', title: 'My Family'},
+			{path: 'users', title: 'My Family'},
 			{path: '', title: 'Tasks'},
 			{path: '', title: 'Allowance'},
 			{path: 'about', title: 'Users'},

@@ -15,7 +15,13 @@ angular.module('allowanceApp')
 			},
 			setToken: function (token) {
 			  	$localStorage.token = token;
-			}			
+			},
+			getUser : function () {
+			  	return $localStorage.user;
+			},
+			setUser: function (user) {
+			  	$localStorage.user = user;
+			}				
 		};
 	});
 

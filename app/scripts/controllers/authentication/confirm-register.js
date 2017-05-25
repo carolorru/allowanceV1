@@ -20,7 +20,12 @@ angular.module('allowanceApp')
 			$scope.status = response.data.status === 401;
 
 			if (!$scope.status) {
-				AuthenticService.signin(response.data.return).then( function(){
+				$scope.credentials = {
+					email: response.data.return.email,
+					password: response.data.return.pass_tmp
+				};
+
+				AuthenticService.signin($scope.credentials).then( function(){
 					
 					$location.path('/');
 

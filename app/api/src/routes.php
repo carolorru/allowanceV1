@@ -135,10 +135,18 @@ $app->post("/token", function ($request, $response, $arguments) {
 		"exp" => $future->getTimeStamp(),
 		"name" => $server["PHP_AUTH_USER"],
 	];
+
 	$secret = getenv('JWT_SECRET');
 	$token = JWT::encode($payload, $secret, "HS256");
-	$data["status"] = "ok";
+
+	$connection = $this->db;
+	$stmt = $connection->prepare('SELECT id, first_name, last_name, email FROM user WHERE email = "'.$server["PHP_AUTH_USER"].'";');
+	$stmt->execute();
+	$rows = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	$data["status"] = 201;
 	$data["token"] = $token;
+	$data["user"] = $rows;
 
 	return $response->withStatus(201)
 		->withHeader("Content-Type", "application/json")
