@@ -36,13 +36,13 @@ angular
 				authorize: true
 			})
 			.when('/login', {
-				templateUrl: 'views/login.html',
+				templateUrl: 'views/authentication/login.html',
 				controller: 'LoginCtrl',
 				controllerAs: 'login',
 				authorize: false
 			})
 			.when('/register', {
-				templateUrl: 'views/register.html',
+				templateUrl: 'views/authentication/register.html',
 				controller: 'RegisterCtrl',
 				controllerAs: 'register',
 				authorize: false
@@ -54,19 +54,19 @@ angular
 				authorize: true
 			})
 			.when('/confirm-register/:code', {
-				templateUrl: 'views/confirm-register.html',
+				templateUrl: 'views/authentication/confirm-register.html',
 				controller: 'ConfirmRegisterCtrl',
 				controllerAs: 'confirmRegister',
 				authorize: false
 			})
 			.when('/forgot-password/:email/:code', {
-				templateUrl: 'views/forgot-password.html',
+				templateUrl: 'views/authentication/forgot-password.html',
 				controller: 'ForgotPasswordCtrl',
 				controllerAs: 'forgotPassword',
 				authorize: false
 			})
 			.when('/forgot-password-email', {
-				templateUrl: 'views/forgot-password-email.html',
+				templateUrl: 'views/authentication/forgot-password-email.html',
 				controller: 'ForgotPasswordEmailCtrl',
 				controllerAs: 'forgotPasswordEmail',
 				authorize: false

@@ -77,9 +77,12 @@ class Users
 					$data = array('status' => 401,'data' => 'ok', 'message' => 'This account is not active yet.');	
 				}else{
 
-					$this->activCode = md5($request->getParsedBodyParam("first_name") . date('Ymdhis'));
+					$this->activCode = md5($request->getParsedBodyParam("email") . date('Ymdhis'));
 
-					$this->sendEmailPassword($request, $rows[0]["password"]);
+					$codeValidate = $connection->prepare('UPDATE user SET activ_code = "'.$this->activCode.'" WHERE email = "'.$request->getParsedBodyParam("email").'"');
+					$codeValidate->execute();
+
+					$this->sendEmailPassword($request);
 					$data = array('status' => 201,'data' => 'ok', 'message' => 'An email was send to you, so you can change your password.');	
 				}
 							
@@ -129,7 +132,7 @@ class Users
 		 
 	}
 
-	public function sendEmailPassword($request, $password){
+	public function sendEmailPassword($request){
 
 		$mail = new Message;
 
@@ -187,8 +190,7 @@ class Users
 			$connection = $this->db;
 
 			$codeValidate = $connection->prepare('UPDATE user 
-												SET password = "'.password_hash($request->getParsedBodyParam("password"), PASSWORD_DEFAULT).'", 
-													pass_tmp = "'.$request->getParsedBodyParam("password").'"
+												SET password = "'.password_hash($request->getParsedBodyParam("password"), PASSWORD_DEFAULT).'"
 												WHERE activ_code = "'.$request->getParam('code').'"');
 			$codeValidate->execute();
 			
