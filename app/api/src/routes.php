@@ -22,25 +22,6 @@ $app->group('/users',function() use ($app){
 			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 	});
 
-  // CALL AN UNIQUE USER
-	$app->get('/{id}',function($request, $response, $args){
-
-		$this->logger->addInfo("Choose an user");
-		$id = $name = $request->getAttribute('id');
-
-		$connection = $this->db;
-		$stmt = $connection->prepare('SELECT id, first_name, email FROM user WHERE id = '.$id.';');
-		$stmt->execute();
-		$rows = $stmt->fetchAll();
-
-
-		$data = array('data' => $rows);
-
-		return $response->withStatus(201)
-			->withHeader("Content-Type", "application/json")
-			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-	});
-
 	$app->post('/add', 'UserCtrl:postRegister')->setName('user.register');
 
 	$app->patch('/confirm','UserCtrl:confirmEmail')->setName('user.confirmEmail');
@@ -155,4 +136,4 @@ $app->post("/token", function ($request, $response, $arguments) {
 
 */
 
-$app->get('/token','Auth:authService')->setName('token.create');
+$app->post('/token','Auth:authService')->setName('token.create');

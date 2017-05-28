@@ -47,10 +47,11 @@ class User extends Helper
 					id, 
 					first_name, 
 					last_name, 
-					email 
+					email,
+					pass_tmp
 				FROM user';
 		$sql .= ' WHERE ' . $uniqueParam[0] .' = "' . $uniqueParam[1] . '" LIMIT 1'; 
-		
+
 		$stmt = $this->connection->prepare($sql);
 		$stmt->execute();
 		$user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -65,12 +66,19 @@ class User extends Helper
 
 	public function updateUser($updateData, $uniqueParam)
 	{
-		$sql = 'UPDATE user SET ';
-		foreach ($updateData as $v1) {
-		    $sql .= $v1[0] . '="' . $v1[1] . '"'; 
-		}
-		$sql .= ' WHERE ' . $uniqueParam[0] .' = "' . $uniqueParam[1] . '"'; 
+		$i = 1;
+		$y = count($updateData);
 
+		$sql = 'UPDATE user SET ';
+		foreach ($updateData as $v1) {			
+		    $sql .= $v1[0] . '="' . $v1[1] . '"'; 
+		    $sql .= $i != $y ? ', ' : ' ';
+		    $i++;
+		}
+		$sql .= 'WHERE ' . $uniqueParam[0] .' = "' . $uniqueParam[1] . '"'; 
+
+		//echo $sql;
+		//die();
 		$stmt = $this->connection->prepare($sql);
 		$stmt->execute();		
 	}

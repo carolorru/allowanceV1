@@ -22,9 +22,10 @@ class Auth extends \App\Models\User
      * Static constructor / factory
      */
     public function authService($request, $response) {
+        $uniqueParam = ["email", $request->getServerParams()["PHP_AUTH_USER"]];
         
         $data["token"] = $this->getToken();
-        $data["user"] = parent::getUser($request->getServerParams()["PHP_AUTH_USER"]);
+        $data["user"] = parent::getUser($uniqueParam);
         $data["family"] = parent::getFamily($data["user"]["family_id"]);
 
         return $response->withStatus(201)

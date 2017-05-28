@@ -34,7 +34,7 @@ class UserCtrl extends \App\Models\User
 	public function isNewEmail($email)
 	{
 		$uniqueParam = ["email", $email];
-		$this->user = parent::getUser($$uniqueParam);
+		$this->user = parent::getUser($uniqueParam);
 		return empty($this->user);
 	}
 
@@ -110,9 +110,9 @@ class UserCtrl extends \App\Models\User
 			$data = array('status' => 401,'data' => 'error', 'message' => 'This is not an URL valid');			
 		}else{
 
-			$updateData = [["activ", 1], ["pass_tmp", ""]];
+			$updateData = [["activ", 1], ["pass_tmp", " "]];
 			$uniqueParam = ["activ_code", $request->getParam('code')];
-			$this->user = parent::getUser($$uniqueParam);
+			$this->user = parent::getUser($uniqueParam);
 
 			parent::updateUser($updateData, $uniqueParam);
 
