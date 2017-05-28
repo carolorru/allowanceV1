@@ -41,13 +41,13 @@ $app->group('/users',function() use ($app){
 			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 	});
 
-	$app->post('/add', 'Users:postRegister')->setName('user.register');
+	$app->post('/add', 'UserCtrl:postRegister')->setName('user.register');
 
-	$app->patch('/confirm','Users:confirmEmail')->setName('user.confirmEmail');
+	$app->patch('/confirm','UserCtrl:confirmEmail')->setName('user.confirmEmail');
 
-	$app->post('/forgotPassword','Users:forgotPassword')->setName('user.forgetPassword');
+	$app->post('/forgotPassword','UserCtrl:forgotPassword')->setName('user.forgetPassword');
 
-	$app->patch('/changePassword','Users:changePassword')->setName('user.changePassword');
+	$app->patch('/changePassword','UserCtrl:changePassword')->setName('user.changePassword');
 
   /*
   $app->put('/:id', function($id) use ($app){
@@ -123,7 +123,7 @@ $app->get('/', function ($request, $response, $args) {
 	return $this->renderer->render($response, 'index.phtml', $args);
 });
 
-
+/*
 $app->post("/token", function ($request, $response, $arguments) {
 
 	$now = new DateTime();
@@ -153,5 +153,6 @@ $app->post("/token", function ($request, $response, $arguments) {
 		->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 });
 
+*/
 
-
+$app->get('/token','Auth:authService')->setName('token.create');
